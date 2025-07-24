@@ -1,0 +1,23 @@
+       .summary-card {
+           text-align: center;
+           padding: 1.5rem;
+           border-radius: 1rem;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+       }
+
+       .summary-title {
+           font-size: 1.2rem;
+           font-weight: 600;
+       }
+
+       .summary-value {
+           font-size: 1.5rem;
+           font-weight: bold;
+       }
+
+       .main-wrapper {
+           width: 1000px;
+           background: #ebebeb;
+           box-shadow: 0 0 10px 0px #00000038;
+           padding: 30px 20px;
+       }

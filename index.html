@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Budget Tracker App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body class="bg-light">
+    <div class="container my-5 main-wrapper">
+        <h2 class="mb-4 text-center">💰 Budget Tracker</h2>
+
+        <!-- Summary Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="bg-success text-white summary-card">
+                    <div class="summary-title">Income</div>
+                    <div class="summary-value">$<span id="incomeValue">0.00</span></div>
+                    <button id="income_btn" class="btn btn-outline-light btn-sm mt-2" data-bs-toggle="modal"
+                        data-bs-target="#addIncomeModalLabel">Add Income</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-danger text-white summary-card">
+                    <div class="summary-title">Spent</div>
+                    <div class="summary-value">$<span id="spentValue">0.00</span></div>
+                    <button id="expense_btn" class="btn btn-outline-light btn-sm mt-2" data-bs-toggle="modal"
+                        data-bs-target="#addexpenseModal">Add Expense</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-primary text-white summary-card">
+                    <div class="summary-title">Remaining</div>
+                    <div class="summary-value" id="remainingValue">$<span>0.00</span></div>
+                    <button id="-" class="btn btn-outline-light btn-sm mt-2">Add Remaining</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate">
+            </div>
+            <div class="col-md-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate">
+            </div>
+            <div class="col-md-3">
+                <label for="filterCategory" class="form-label">Filter by Category</label>
+                <select class="form-select" id="filterCategory">
+                    <option selected>All</option>
+                    <option value="food">Food</option>
+                    <option value="transport">Transport</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="bills">Bills</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button class="btn btn-outline-primary w-100" id="filterBtn">Apply Filters</button>
+            </div>
+        </div>
+
+        <!-- Expenses Table -->
+        <div class="table-responsive">
+           <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody id="expensesData">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Income Modal -->
+    <div class="modal fade" id="addIncomeModalLabel" tabindex="-1" aria-labelledby="addincomeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addincomeModalLabel"> Add Income</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="number" class="form-control" id="incomeInput" autocomplete="off"
+                            placeholder="Write Your Income" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="updateIncomeBtn">Update Income</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Expense Modal -->
+    <div class="modal fade" id="addexpenseModal" tabindex="-1" aria-labelledby="addexpenseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addexpenseModalLabel">Add New Income</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="incomeForm">
+                        <div class="mb-3">
+                            <label for="expenseAmount" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="expenseAmount" placeholder="Enter amount"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="expenseDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseCategory" class="form-label">Cateogry</label>
+                            <select class="form-select" id="expenseCategory">
+                                <option selected>Others</option>
+                                <option value="food">Food</option>
+                                <option value="transport">Transport</option>
+                                <option value="groceries">Groceries</option>
+                                <option value="bills">Bills</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="description">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addExpense()">Save Expense</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let updateIncomeBtn = document.getElementById("updateIncomeBtn");
+        let incomeInput = document.getElementById("incomeInput");
+        let incomeValue = document.getElementById("incomeValue");
+        let remainingValue = document.querySelector("#remainingValue span")
+        let spentValue = document.getElementById("spentValue");
+        
+      let totalIncome = 0;
+        let totalRemaining = 0;
+        let totalExpenses = 0;
+        let expenses = [];
+
+        function updateTotals(income = null, totalExpenses = null){
+           if (income !== 0){
+             incomeValue.innerText = income;
+                totalIncome = income;
+           }
+           if(totalExpenses !== null){
+            totalRemaining = +totalIncome - totalExpenses;
+           }
+           
+       
+        }
+
+        
+
+        updateIncomeBtn.addEventListener("click", function () {
+            let incomeInputValue = incomeInput.value;
+
+            updateTotals(incomeInputValue, null);
+
+
+            // close modal
+            var incomeModal = document.getElementById('addIncomeModalLabel');
+            var incomeModalInc = bootstrap.Modal.getInstance(incomeModal);
+            incomeModalInc.hide();
+        });
+             function addExpense() {
+            let expense = document.getElementById("expenseAmount").value;
+            let date = document.getElementById("expenseDate").value;
+            let category = document.getElementById("expenseCategory").value;
+            let desc = document.getElementById("description").value;
+
+            let expenseObj = {
+                amount: expense,
+                date: date,
+                category: category,
+                desc: desc
+            }
+
+
+            
+            expenses.push(expenseObj);
+
+
+           
+            updateExpensesData();
+
+            // close modal
+             var exModal = bootstrap.Modal.getInstance(document.getElementById('addExpenseModal'));
+            exModal.hide();
+        }
+
+
+        // update expense row
+        function updateExpensesData() {
+
+            let rowsHtml = "";
+            let totalExpAmount = 0;
+
+            expenses.forEach(function (exp, index) {
+                rowsHtml += `
+                 <tr>
+                        <td>${exp.date}</td>
+                        <td>${exp.category}</td>
+                        <td>${exp.amount}</td>
+                        <td>${exp.desc}</td>
+                    </tr>
+                `;
+
+                totalExpAmount += +exp.amount;
+            })
+
+        
+            document.getElementById("expensesData").innerHTML = rowsHtml;
+
+            updateTotals(null, totalExpAmount);
+
+            console.log(expenses, totalExpAmount);
+        }
+
+
+
+    </script>
+</body>
+
+</html>
