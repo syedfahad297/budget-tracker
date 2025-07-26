@@ -57,7 +57,7 @@
                     <option selected>All</option>
                     <option value="food">Food</option>
                     <option value="transport">Transport</option>
-                    <option value="groceries">Groceries</option>
+                    <option value="entertainment">Entertainment</option>
                     <option value="bills">Bills</option>
                 </select>
             </div>
@@ -160,7 +160,6 @@
         let incomeValue = document.getElementById("incomeValue");
         let remainingValue = document.querySelector("#remainingValue span")
         let spentValue = document.getElementById("spentValue");
-        let filterBtn = document.getElementById("filterBtn");
         
       let totalIncome = 0;
         let totalRemaining = 0;
@@ -168,14 +167,13 @@
         let expenses = [];
 
         function updateTotals(income = null, totalExpenses = null){
-           if (income !== null){
+           if (income !== 0){
              incomeValue.innerText = income;
                 totalIncome = income;
            }
            if(totalExpenses !== null){
             totalRemaining = +totalIncome - totalExpenses;
            }
-           remainingValue.innerText = totalRemaining;
            
        
         }
@@ -215,25 +213,18 @@
             updateExpensesData();
 
             // close modal
-              var expenseModal = document.getElementById('addexpenseModal');
-            var expenseModal = bootstrap.Modal.getInstance(expenseModal);
-            expenseModal.hide();
+             var exModal = bootstrap.Modal.getInstance(document.getElementById('addExpenseModal'));
+            exModal.hide();
         }
 
 
         // update expense row
-        function updateExpensesData(expensesData = null) {
+        function updateExpensesData() {
 
             let rowsHtml = "";
             let totalExpAmount = 0;
 
-            let expenseAr = expenses;
-
-            if (expensesData != null) {
-                expenseAr = expensesData;
-            }
-
-            expenseAr.forEach(function (exp, index) {
+            expenses.forEach(function (exp, index) {
                 rowsHtml += `
                  <tr>
                         <td>${exp.date}</td>
@@ -244,66 +235,17 @@
                 `;
 
                 totalExpAmount += +exp.amount;
-
             })
 
         
             document.getElementById("expensesData").innerHTML = rowsHtml;
 
             updateTotals(null, totalExpAmount);
-            document.getElementById("spentValue").innerText = totalExpAmount;
-
 
             console.log(expenses, totalExpAmount);
         }
-        filterBtn.addEventListener("click", function(){
-         let filterCat = document.getElementById("filterCategory").value;
-            let startDateValue = document.getElementById("startDate").value;
-            let endDateValue = document.getElementById("endDate").value;
-
-            let startDateMS = null;
-            let endDateMS = null;
-
-            if (startDateValue != "" && endDateValue != "") {
-                startDateMS = new Date(startDateValue).getTime();
-                endDateMS = new Date(endDateValue).getTime();
-            }
 
 
-
-            let filteredData = expenses.filter(function (element, index) {
-
-                if (filterCat != 'All') {
-                    if (element.category == filterCat) {
-                        return element;
-                    }
-                } else {
-                    return element;
-                }
-
-            });
-
-
-            // filter by start date and end date
-            if (startDateMS != null && endDateMS != null) {
-                console.log("inside seconds")
-
-                let filteredByDates = filteredData.filter(function (element, index) {
-
-                    let expenseDateMS = new Date(element.date).getTime();
-
-                    if (expenseDateMS >= startDateMS && expenseDateMS <= endDateMS) {
-                        return element;
-                    } 
-                });
-
-                updateExpensesData(filteredByDates);
-                return;
-            }
-
-            updateExpensesData(filteredData);
-
-        });
 
     </script>
 </body>
